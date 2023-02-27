@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+  scrapper:
+    container_name: scrapper
+    build: ./build/scrapper
+    command: "tail -f /dev/null"
+    ports:
+      - 5000:5000
+    volumes:
+      - ./scrapper:/scrapper
+    env_file:
+      - .env
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    env_file:
+      - .env
