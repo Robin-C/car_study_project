@@ -1,0 +1,9 @@
+version: 2
+
+seeds:
+  - name: mapping_colors
+    config:
+      schema: source
+  - name: mapping_models
+    config:
+      schema: source      

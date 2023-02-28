@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: stg_ads_cleaning
+    description: We clean colors and models
+    config:
+      materialized: incremental
+      unique_key: ['ad_id', 'scraped_at']
+  - name: stg_ads_fix_spoofing
+    description: We adjust for the fake numbers given by lacentrale
+    config:
+      materialized: table    

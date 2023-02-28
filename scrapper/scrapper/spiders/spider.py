@@ -31,6 +31,7 @@ class LaCentraleSpider(scrapy.Spider):
                 url,
                 callback=self.parse_ad,
                 meta={"region": region},
+                priority=1
             )
         next_page_url = response.xpath(
             ".//a[@class='page active']/following-sibling::a[1]"
@@ -79,17 +80,16 @@ class LaCentraleSpider(scrapy.Spider):
         ).get()
         region = response.meta.get("region")
         seller = response.xpath(
-            "//span[@class='carousel-pictures-info customer-type']//span[@class='Tag_Tag_tag Tag_Tag_extratiny Tag_Tag_image Tag_Tag_left']/text()"
+            "//span[@class='carousel-pictures-info customer-type']//span[@class='Tag_Tag_tag Tag_Tag_extratiny Tag_Tag_image Tag_Tag_left']/div/text()"
         ).get()
-
         yield {
-            "id": re.findall(r"\d+", response.url)[0],
+            "ad_id": re.findall(r"\d+", response.url)[0],
             "url": response.url,
             "model": model,
             "trim": trim,
             "price": price,
             "seller": seller,
-            "registered_in": registered_on,
+            "registered_on": registered_on,
             "year": year,
             "km": km,
             "transmission": transmission,

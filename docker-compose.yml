@@ -22,7 +22,7 @@ services:
     env_file:
       - .env
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadminname
     image: dpage/pgadmin4
     restart: always
     ports:
@@ -31,5 +31,14 @@ services:
       - ./pgadmin_data:/var/lib/pgadmin
     depends_on:
       - postgres
+    env_file:
+      - .env
+
+  dbt:
+    container_name: dbt
+    build: ./build/dbt
+    command: "tail -f /dev/null"
+    volumes:
+      - ./dbt:/dbt
     env_file:
       - .env
