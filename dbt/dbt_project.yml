@@ -26,7 +26,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 
 vars:
-  spoof_percent: 0.85
+  spoof_percent: 1.15
   spoof_year: 1
 
 # Configuring models
@@ -40,6 +40,7 @@ models:
     # Config indicated by + and applies to all files under models/example/
     source:
       +materialized: view
+      +schema: source
     stg:
       +materialized: table
-      schema: stg 
+      +schema: stg 

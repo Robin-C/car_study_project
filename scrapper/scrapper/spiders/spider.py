@@ -11,11 +11,12 @@ class LaCentraleSpider(scrapy.Spider):
     name = "lacentrale"
 
     def start_requests(self):
+        started_scrape_at = datetime.datetime.now()
         for url in urls:
             yield scrapy.Request(
                 url,
                 callback=self.parse,
-                meta={"proxy": "http://p.webshare.io:9999"},
+                meta={"proxy": "http://p.webshare.io:9999", "started_scrape_at": started_scrape_at},
             )
 
     def parse(self, response):
@@ -30,14 +31,14 @@ class LaCentraleSpider(scrapy.Spider):
             yield response.follow(
                 url,
                 callback=self.parse_ad,
-                meta={"region": region},
+                meta={"region": region, "started_scrape_at": response.meta.get("started_scrape_at")},
                 priority=1
             )
         next_page_url = response.xpath(
             ".//a[@class='page active']/following-sibling::a[1]"
         ).attrib["href"]
         if next_page_url:
-            yield response.follow(next_page_url, callback=self.parse)
+            yield response.follow(next_page_url, callback=self.parse, meta={"started_scrape_at": response.meta.get("started_scrape_at")})
 
     def parse_ad(self, response):
         model = response.xpath(
@@ -82,6 +83,8 @@ class LaCentraleSpider(scrapy.Spider):
         seller = response.xpath(
             "//span[@class='carousel-pictures-info customer-type']//span[@class='Tag_Tag_tag Tag_Tag_extratiny Tag_Tag_image Tag_Tag_left']/div/text()"
         ).get()
+        started_scrape_at = response.meta.get("started_scrape_at")
+        
         yield {
             "ad_id": re.findall(r"\d+", response.url)[0],
             "url": response.url,
@@ -102,4 +105,5 @@ class LaCentraleSpider(scrapy.Spider):
             "region": region,
             "published_since": published_since,
             "scraped_at": datetime.datetime.now(),
+            "started_scrape_at": started_scrape_at
         }

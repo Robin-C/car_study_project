@@ -7,3 +7,6 @@ seeds:
   - name: mapping_models
     config:
       schema: source      
+  - name: mapping_regions
+    config:
+      schema: source   

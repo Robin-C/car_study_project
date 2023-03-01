@@ -75,7 +75,7 @@ AUTOTHROTTLE_START_DELAY = 2
 AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-AUTOTHROTTLE_TARGET_CONCURRENCY = 2
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.5
 # Enable showing throttling stats for every response received:
 # AUTOTHROTTLE_DEBUG = False
 

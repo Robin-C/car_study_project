@@ -8,11 +8,11 @@ spoofing_fixed as (
          , url
          , model
          , trim
-         , price
+         , (price / {{ var('spoof_percent') }})::integer as price
          , seller
-         , registered_on
+         , registered_on - 365 as registered_on
          , year - 1 as year
-         , km * {{ var('spoof_percent') }}
+         , (km / {{ var('spoof_percent') }})::integer as km
          , transmission
          , engine
          , hp
@@ -21,7 +21,16 @@ spoofing_fixed as (
          , co2
          , site_rec
          , region
-         , published_since
+         , published_at
          , scraped_at
+         , started_scrape_at
+    from stg_ads_cleaning  
+),
+
+final as (
+    select *
+    from spoofing_fixed
 )
 
+select *
+from final

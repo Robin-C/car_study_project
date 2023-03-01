@@ -8,7 +8,7 @@
 from itemadapter import ItemAdapter
 import pandas as pd
 from sqlalchemy import create_engine
-
+import sys
 
 conn_string = "postgresql://postgres:mypgdbpass@89.40.11.101/postgres"
 engine = create_engine(conn_string)
@@ -23,8 +23,12 @@ class ScrapperPipeline:
      
 
     def close_spider(self, spider):
-        df = pd.DataFrame.from_dict(self.data)
-        insert = df.to_sql(
-            "ads", con=engine, schema="raw", if_exists="replace", index=False
-        )
-        print(f"{insert} rows inserted")
+        if len(self.data) > 12000:
+            df = pd.DataFrame.from_dict(self.data)
+            print(df)
+            insert = df.to_sql(
+                "ads", con=engine, schema="raw", if_exists="append", index=False
+            )
+        else:
+            sys.exit(1) # we didnt scrape the whole thing for some reason
+

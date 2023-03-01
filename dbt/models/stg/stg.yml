@@ -1,12 +1,20 @@
 version: 2
 
 models:
+  - name: stg_ads_casting
+    description: We cast to correct type
+    config:
+      materialized: table
   - name: stg_ads_cleaning
     description: We clean colors and models
     config:
-      materialized: incremental
-      unique_key: ['ad_id', 'scraped_at']
+      materialized: table
+      # unique_key: ['ad_id', 'scraped_at']
   - name: stg_ads_fix_spoofing
     description: We adjust for the fake numbers given by lacentrale
     config:
-      materialized: table    
+      materialized: table
+  - name: stg_ads_scrape_rank
+    description: |
+      We partition the data and calculate the rank for each ingestion using "started_scrape_at" column 
+      We need this column so we can calculate when the ads was first and last scraped.
