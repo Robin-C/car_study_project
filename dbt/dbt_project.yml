@@ -44,3 +44,6 @@ models:
     stg:
       +materialized: table
       +schema: stg 
+    analytics:
+      +materialized: table
+      +schema: analytics 

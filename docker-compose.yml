@@ -21,6 +21,7 @@ services:
       - ./postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
+
   pgadmin:
     container_name: pgadminname
     image: dpage/pgadmin4
@@ -40,5 +41,13 @@ services:
     command: "tail -f /dev/null"
     volumes:
       - ./dbt:/dbt
+    env_file:
+      - .env
+
+  metabase:
+    container_name: metabase
+    build: ./build/metabase
+    ports:
+      - "3000:3000"
     env_file:
       - .env

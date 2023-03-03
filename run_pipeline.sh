@@ -1,15 +1,3 @@
 #!/bin/bash
 
-run() {
-  $*
-  if [ $? -ne 0 ]
-  then
-    echo "$* failed with exit code $?"
-    return 1
-  else
-    return 0
-  fi
-}
-
-
-run docker exec scrapper scrapy crawl lacentrale --logfile log.log && run docker exec dbt dbt run
+docker exec scrapper scrapy crawl lacentrale --logfile /car_study/scrapper/log.log && docker exec dbt dbt seed && docker exec dbt dbt run
