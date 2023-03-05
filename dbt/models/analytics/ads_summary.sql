@@ -47,7 +47,7 @@ calculate_number_of_days_to_sell as (
 final as (
     select *
     from calculate_number_of_days_to_sell
-	where published_at <> '2000-01-01' and status = 'SOLD'
+	where published_at <> '2000-01-01'
 )
 
 select *
