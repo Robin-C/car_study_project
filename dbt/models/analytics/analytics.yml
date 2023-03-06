@@ -1,0 +1,158 @@
+version: 2
+models:
+  - name: ads_summary_sold
+  - name: dim_models
+    description: Dimension table for models
+    columns:
+      - name: model
+        description: A car model
+        meta:
+          dimension:
+            type: string
+      - name: class
+        description: The class the model is part of
+        meta:
+          dimension:
+            type: string
+- name: dim_date
+    columns:
+      - name: date
+        description: "id"
+        meta:
+          dimension:
+            type: date
+      - name: epoch
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: day_suffix
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: day_name
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: day_of_week
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: day_of_month
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: day_of_quarter
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: day_of_year
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: week_of_month
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: week_of_year
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: week_year_iso
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: month_actual
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: month_name
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: month_name_abbreviated
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: quarter_actual
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: quarter_name
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: year_actual
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: first_day_of_week
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: last_day_of_week
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: first_day_of_month
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: last_day_of_month
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: first_day_of_quarter
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: last_day_of_quarter
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: first_day_of_year
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: last_day_of_year
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: mmyyyy
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: mmddyyyy
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: weekend_indr
+        description: ""
+        meta:
+          dimension:
+            type: boolean

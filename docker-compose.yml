@@ -52,7 +52,8 @@ services:
     volumes:
       - ./dbt:/usr/app/dbt
       - ./dbt/profiles.yml:/root/.dbt/profiles.yml
-    command: "npm install -g @lightdash/cli@0.438.0 && lightdash login http://localhost:8080 --token 9854f949887ebb070148f72c6c33fde8 && lightdash deploy --create"
+      # - ./lightdash/lightdash.yml:/usr/app/lightdash.yml
+    command: "npm install -g @lightdash/cli"
 
     env_file:
       - .env

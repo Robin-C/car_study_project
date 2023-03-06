@@ -10,3 +10,4 @@ scraper:
       dbname: postgres
       schema: dbt
       threads: 4
+      sslmode: disable
