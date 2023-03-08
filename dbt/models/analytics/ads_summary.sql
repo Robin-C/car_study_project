@@ -25,8 +25,8 @@ summary as (
      , max(scrape_rank) over(partition by ad_id) as last_scrape_rank
 	 , count(*) over(partition by ad_id) as number_scraped
 	 , max(published_at) over(partition by ad_id) as published_at 
-from stg_ads_scrape_rank
-group by ad_id, url, model, trim, scrape_rank, price, seller, year, registered_on, km, transmission, engine, hp, color, efficiency, co2, site_rec, region, published_at, started_scrape_at
+	from stg_ads_scrape_rank
+	group by ad_id, url, model, trim, scrape_rank, price, seller, year, registered_on, km, transmission, engine, hp, color, efficiency, co2, site_rec, region, published_at, started_scrape_at
 ),
 
 set_status as (

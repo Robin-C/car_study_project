@@ -1,0 +1,43 @@
+version: 2
+
+metrics:
+  - name: count_ads_published
+    label: ads published
+    model: ref('ads_summary')
+    calculation_method: count_distinct
+    expression: ad_id
+    timestamp: published_at
+    time_grains: [day, week, month, quarter, year, all_time]
+  - name: count_ads_sold
+    label: ads sold
+    model: ref('ads_summary')
+    calculation_method: count_distinct
+    expression: ad_id
+    timestamp: sold_at
+    time_grains: [day, week, month, quarter, year, all_time]
+    filters:
+      - field: status
+        operator: '='
+        value: "'SOLD'"
+  - name: average_price
+    label: average price of a car sold
+    model: ref('ads_summary')
+    calculation_method: average
+    expression: price
+    timestamp: sold_at
+    time_grains: [day, week, month, quarter, year, all_time]
+    filters:
+      - field: status
+        operator: '='
+        value: "'SOLD'"        
+  - name: average_tts
+    label: average time to sell in days
+    model: ref('ads_summary')
+    calculation_method: average
+    expression: time_to_sell
+    timestamp: sold_at
+    time_grains: [day, week, month, quarter, year, all_time]
+    filters:
+      - field: status
+        operator: '='
+        value: "'SOLD'"                

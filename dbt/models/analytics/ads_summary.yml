@@ -1,157 +1,125 @@
 version: 2
 models:
-  - name: dim_models
-    description: Dimension table for models
+  - name: ads_summary
     columns:
+      - name: ad_id
+        description: ""
+        meta:
+          dimension:
+            type: number
+
+      - name: url
+        description: ""
+        meta:
+          dimension:
+            type: string
       - name: model
-        description: A car model
+        description: ""
         meta:
           dimension:
             type: string
-      - name: class
-        description: The class the model is part of
+      - name: trim
+        description: ""
         meta:
           dimension:
             type: string
-  - name: dim_date
-    columns:
-      - name: date
+      - name: price
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: seller
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: year
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: registered_on
         description: ""
         meta:
           dimension:
             type: date
-      - name: epoch
+      - name: km
         description: ""
         meta:
           dimension:
             type: number
-      - name: day_suffix
+      - name: transmission
         description: ""
         meta:
           dimension:
             type: string
-      - name: day_name
+      - name: engine
         description: ""
         meta:
           dimension:
             type: string
-      - name: day_of_week
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: day_of_month
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: day_of_quarter
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: day_of_year
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: week_of_month
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: week_of_year
-        description: ""
-        meta:
-          dimension:
-            type: number
-      - name: week_year_iso
+      - name: hp
         description: ""
         meta:
           dimension:
             type: string
-      - name: month_actual
+      - name: color
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: efficiency
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: co2
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: site_rec
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: region
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: last_scraped_at
+        description: ""
+        meta:
+          dimension:
+            type: timestamp
+      - name: last_scrape_rank
         description: ""
         meta:
           dimension:
             type: number
-      - name: month_name
-        description: ""
-        meta:
-          dimension:
-            type: string
-      - name: month_name_abbreviated
-        description: ""
-        meta:
-          dimension:
-            type: string
-      - name: quarter_actual
+      - name: number_scraped
         description: ""
         meta:
           dimension:
             type: number
-      - name: quarter_name
+      - name: published_at
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: sold_at
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: status
         description: ""
         meta:
           dimension:
             type: string
-      - name: year_actual
+      - name: time_to_sell
         description: ""
         meta:
           dimension:
             type: number
-      - name: first_day_of_week
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: last_day_of_week
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: first_day_of_month
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: last_day_of_month
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: first_day_of_quarter
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: last_day_of_quarter
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: first_day_of_year
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: last_day_of_year
-        description: ""
-        meta:
-          dimension:
-            type: date
-      - name: mmyyyy
-        description: ""
-        meta:
-          dimension:
-            type: string
-      - name: mmddyyyy
-        description: ""
-        meta:
-          dimension:
-            type: string
-      - name: weekend_indr
-        description: ""
-        meta:
-          dimension:
-            type: boolean
