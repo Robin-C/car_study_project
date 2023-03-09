@@ -40,4 +40,4 @@ metrics:
     filters:
       - field: status
         operator: '='
-        value: "'SOLD'"                
+        value: "'SOLD'"
