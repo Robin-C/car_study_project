@@ -1,13 +1,12 @@
 version: 2
 models:
-  - name: ads_summary
+  - name: ads_summary_wide
     columns:
       - name: ad_id
         description: ""
         meta:
           dimension:
             type: number
-
       - name: url
         description: ""
         meta:
@@ -123,3 +122,8 @@ models:
         meta:
           dimension:
             type: number
+      - name: class
+        description: ""
+        meta:
+          dimension:
+            type: string

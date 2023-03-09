@@ -1,0 +1,74 @@
+version: 2
+models:
+  - name: ads_published_sold_per_day
+    columns:
+      - name: date
+        description: ""
+        meta:
+          dimension:
+            type: date
+      - name: model
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: class
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: color
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: engine
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: hp
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: km
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: price
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: region
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: status
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: transmission
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: year
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: count_published
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: count_sold
+        description: ""
+        meta:
+          dimension:
+            type: number

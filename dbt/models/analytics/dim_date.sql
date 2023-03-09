@@ -39,8 +39,12 @@ SELECT
        CASE
            WHEN EXTRACT(ISODOW FROM datum) IN (6, 7) THEN TRUE
            ELSE FALSE
-           END AS weekend_indr
-FROM (SELECT '2022-01-01'::DATE + SEQUENCE.DAY AS datum
+           END AS weekend_indr,
+       datum >= (DATE_TRUNC('MONTH', current_date) + INTERVAL '1 MONTH')::DATE as is_next_month           
+FROM (SELECT '2022-12-31'::DATE + SEQUENCE.DAY AS datum
       FROM GENERATE_SERIES(0, 365*4) AS SEQUENCE (DAY)
       GROUP BY SEQUENCE.DAY) DQ
+      where 1=1
+      --and datum < (DATE_TRUNC('MONTH', current_date) + INTERVAL '1 MONTH')::DATE -- is_next_month = false
+      and datum <= current_date - 2
 order by 1

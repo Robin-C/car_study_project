@@ -1,27 +1,28 @@
 version: 2
 
 metrics:
+
+## ALL
   - name: count_ads_published
-    label: ads published
-    model: ref('ads_summary')
-    calculation_method: count_distinct
-    expression: ad_id
-    timestamp: published_at
+    label: ads published based on published date
+    model: ref('ads_published_sold_per_day')
+    calculation_method: sum
+    expression: count_published
+    timestamp: date
     time_grains: [day, week, month, quarter, year, all_time]
+
+## SOLD
   - name: count_ads_sold
-    label: ads sold
-    model: ref('ads_summary')
-    calculation_method: count_distinct
-    expression: ad_id
-    timestamp: sold_at
+    label: ads sold based on sold date
+    model: ref('ads_published_sold_per_day')
+    calculation_method: sum
+    expression: count_sold
+    timestamp: date
     time_grains: [day, week, month, quarter, year, all_time]
-    filters:
-      - field: status
-        operator: '='
-        value: "'SOLD'"
+
   - name: average_price
     label: average price of a car sold
-    model: ref('ads_summary')
+    model: ref('ads_summary_wide')
     calculation_method: average
     expression: price
     timestamp: sold_at
@@ -29,10 +30,11 @@ metrics:
     filters:
       - field: status
         operator: '='
-        value: "'SOLD'"        
+        value: "'SOLD'"
+
   - name: average_tts
     label: average time to sell in days
-    model: ref('ads_summary')
+    model: ref('ads_summary_wide')
     calculation_method: average
     expression: time_to_sell
     timestamp: sold_at
@@ -40,4 +42,29 @@ metrics:
     filters:
       - field: status
         operator: '='
-        value: "'SOLD'"
+        value: "'SOLD'"        
+
+## INVENTORY
+  - name: inventory_count
+    label: inventory count
+    model: ref('ads_inventory')
+    calculation_method: sum
+    expression: count
+    timestamp: date
+    time_grains: [day]
+
+  - name: inventory_average_price
+    label: inventory average price
+    model: ref('ads_inventory')
+    calculation_method: average
+    expression: price
+    timestamp: date
+    time_grains: [day]  
+
+  - name: inventory_average_km
+    label: inventory average km
+    model: ref('ads_inventory')
+    calculation_method: average
+    expression: km
+    timestamp: date
+    time_grains: [day]  

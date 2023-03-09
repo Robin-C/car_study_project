@@ -1,3 +1,5 @@
+{{ config(materialized='view') }}
+
 with stg_ads_scrape_rank as (
     select *
     from {{ ref('stg_ads_scrape_rank') }}
