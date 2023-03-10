@@ -12,7 +12,7 @@ metrics:
     time_grains: [day, week, month, quarter, year, all_time]
 
 ## SOLD
-  - name: count_ads_sold
+  - name: sold_count
     label: ads sold based on sold date
     model: ref('ads_published_sold_per_day')
     calculation_method: sum
@@ -20,7 +20,7 @@ metrics:
     timestamp: date
     time_grains: [day, week, month, quarter, year, all_time]
 
-  - name: average_price
+  - name: sold_average_price
     label: average price of a car sold
     model: ref('ads_summary_wide')
     calculation_method: average
@@ -32,7 +32,7 @@ metrics:
         operator: '='
         value: "'SOLD'"
 
-  - name: average_tts
+  - name: sold_average_tts
     label: average time to sell in days
     model: ref('ads_summary_wide')
     calculation_method: average
@@ -42,29 +42,4 @@ metrics:
     filters:
       - field: status
         operator: '='
-        value: "'SOLD'"        
-
-## INVENTORY
-  - name: inventory_count
-    label: inventory count
-    model: ref('ads_inventory')
-    calculation_method: sum
-    expression: count
-    timestamp: date
-    time_grains: [day]
-
-  - name: inventory_average_price
-    label: inventory average price
-    model: ref('ads_inventory')
-    calculation_method: average
-    expression: price
-    timestamp: date
-    time_grains: [day]  
-
-  - name: inventory_average_km
-    label: inventory average km
-    model: ref('ads_inventory')
-    calculation_method: average
-    expression: km
-    timestamp: date
-    time_grains: [day]  
+        value: "'SOLD'"
