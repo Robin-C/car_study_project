@@ -1,0 +1,830 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: d0a357ed-7e32-4a36-bb8e-5596c9afa954 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: We use data from ad website lacentrale.fr for interesting insights
+  projectId: 468b1b3c-3362-4ad2-aece-e4be1e20e48d # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: Car Study
+  timezone: null
+  appTheme: SYS_PREF
+  codeLanguage: PYTHON
+  status: null
+  categories: []
+  castDecimalsDefault: true
+  logicQueryCacheTimeout: null
+  publishedQueryCacheTimeout: null
+projectAssets:
+  dataConnections:
+    - dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb # postgres (postgres)
+  envVars: []
+  secrets: []
+sharedAssets:
+  secrets: []
+  vcsPackages: []
+  dataConnections: []
+cells:
+  - cellType: MARKDOWN
+    cellId: 115244ca-8a14-42e5-aea2-c7281714bcf3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        # Car Study Findings
+
+        *See https://github.com/Robin-C/car_study_project for code and modelling process*
+
+        ## Introduction
+
+        The idea when starting this project was to find insights that could help a potential buyer or seller of a user car.
+
+        - A seller typically wants to sell a car for market to above market price while minimizing the time to sell (TTS). The seller would only sell a car for below market if it decreases TTS.
+
+        - A buyer typically ideally wants to buy their car for as little as possible. We will also assume they care about buying a car that retains its value as much as possible.
+
+        ## General methodology
+
+
+
+
+        We know from the data if a car sold or not, the price it sold for and the time it took to sell.
+
+        First we will explore the data and come up with interesting metrics. We will use SQL.
+
+        Then we will go deeper and try to find predicators susceptible to influence the price of a car and/or its TTS. For that, we will python.
+
+        ## Data exploration
+  - cellType: TEXT
+    cellId: b22b11e7-c1de-4e43-ae54-4290ec895e95 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      richText:
+        - type: paragraph
+          children:
+            - text: Let's calculate and chart the number of cars published per day
+  - cellType: SQL
+    cellId: 33ef247c-13b6-45fa-a9e5-235c174ae125 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Count published per day
+    config:
+      source: |-
+        select date, sum(count_published) as count_published
+        from dbt_analytics.ads_published_sold_per_day
+        where date >= '2023-02-28'
+        group by 1
+        order by 1
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: count_published_per_day
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig:
+        pageSize: 12
+        hideIcons: false
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortIndexColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: date
+            renameTo: null
+            size: 99
+            wrapText: null
+            displayFormat: null
+          - originalName: count_published
+            renameTo: null
+            size: 162
+            wrapText: null
+            displayFormat: null
+        columnOrdering: null
+  - cellType: CHARTV2
+    cellId: 39c2cee7-d266-468e-8f7f-4cce5fec6372 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: 6a6375d9-15e9-4e66-9391-e2dcfc64a661
+            xAxis:
+              type: datetime
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              timeUnit: yearmonthdate
+              dataFrameColumn: date
+            series:
+              - id: 17178593-fa8c-4437-8d64-9b19d983aa99
+                axis:
+                  type: number
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  aggregate: sum
+                type: line
+                color:
+                  type: static
+                point: false
+                stroke: solid
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                colorOrder: ascending
+                dataFrameColumns:
+                  - count_published
+            dataFrame: count_published_per_day
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      resultVariable: filter_result
+  - cellType: TEXT
+    cellId: 6ebb7258-9b4d-4cc1-92eb-a8a2f990b99f # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      richText:
+        - type: paragraph
+          children:
+            - text: Now the number of car sold per day
+  - cellType: SQL
+    cellId: 578be672-1105-49b0-96c2-5bb554e1d0c6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Count sold per day
+    config:
+      source: |-
+        select date, sum(count_sold)::int as count_sold
+        from dbt_analytics.ads_published_sold_per_day
+        where date >= '2023-02-28'
+        group by 1
+        order by 1
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: count_sold_per_day
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig:
+        pageSize: 12
+        hideIcons: false
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortIndexColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: date
+            renameTo: null
+            size: 99
+            wrapText: null
+            displayFormat: null
+          - originalName: count_sold
+            renameTo: null
+            size: 158
+            wrapText: null
+            displayFormat: null
+        columnOrdering: null
+  - cellType: CHARTV2
+    cellId: f472fff6-bbf6-4ad7-8113-a6c576128582 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: b0795134-0d7f-4da8-9908-9dec78982134
+            xAxis:
+              type: string
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              timeUnit: yearmonthdate
+              dataFrameColumn: date
+            series:
+              - id: dec30100-efba-4b85-ba22-4a5bbc349eae
+                axis:
+                  type: number
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  aggregate: sum
+                type: line
+                color:
+                  type: static
+                point: false
+                stroke: solid
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                colorOrder: ascending
+                dataFrameColumns:
+                  - count_sold
+            dataFrame: count_sold_per_day
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      resultVariable: filter_result_2
+  - cellType: MARKDOWN
+    cellId: fe7e226b-49a3-4849-a10f-6769cbd72cc6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        If we know the number of cars published as well as the number of cars sold, we could calculate the number of ongoing ads at anytime. Let's call this metric "inventory". That one should be useful, we can later see if higher inventories correlates with lower prices and/or longer TTS.
+
+        This metric is tricky to calculate using SQL. We'll have to use a window function with the bound/unbound key word.
+  - cellType: SQL
+    cellId: 721e973f-9a37-4b0d-8ad8-dfe16b0acea7 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Raw data
+    config:
+      source: |-
+        select *
+        from dbt_analytics.ads_summary_wide
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: raw_data
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: SQL
+    cellId: c359e913-0a08-4130-9317-c5d8c6e2b5af # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Inventory per day
+    config:
+      source: |-
+        select *
+        from dbt_analytics.inventory
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: inventory_per_day
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig:
+        pageSize: 12
+        hideIcons: false
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortIndexColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: date
+            renameTo: null
+            size: 99
+            wrapText: null
+            displayFormat: null
+          - originalName: ?column?
+            renameTo: null
+            size: 150
+            wrapText: null
+            displayFormat: null
+          - originalName: sum
+            renameTo: null
+            size: 158
+            wrapText: null
+            displayFormat: null
+          - originalName: count_published
+            renameTo: null
+            size: 162
+            wrapText: null
+            displayFormat: null
+          - originalName: count_sold
+            renameTo: null
+            size: 131
+            wrapText: null
+            displayFormat: null
+          - originalName: sum_1
+            renameTo: null
+            size: 158
+            wrapText: null
+            displayFormat: null
+          - originalName: inventory
+            renameTo: null
+            size: 158
+            wrapText: null
+            displayFormat: null
+          - originalName: model
+            renameTo: null
+            size: 105
+            wrapText: null
+            displayFormat: null
+          - originalName: class
+            renameTo: null
+            size: 98
+            wrapText: null
+            displayFormat: null
+          - originalName: color
+            renameTo: null
+            size: 98
+            wrapText: null
+            displayFormat: null
+          - originalName: engine
+            renameTo: null
+            size: 107
+            wrapText: null
+            displayFormat: null
+          - originalName: region
+            renameTo: null
+            size: 105
+            wrapText: null
+            displayFormat: null
+          - originalName: transmission
+            renameTo: null
+            size: 140
+            wrapText: null
+            displayFormat: null
+          - originalName: recency
+            renameTo: null
+            size: 113
+            wrapText: null
+            displayFormat: null
+          - originalName: km_bracket
+            renameTo: null
+            size: 135
+            wrapText: null
+            displayFormat: null
+          - originalName: ad_id
+            renameTo: null
+            size: 111
+            wrapText: null
+            displayFormat: null
+        columnOrdering: null
+  - cellType: CHARTV2
+    cellId: 1874df35-f46a-4c7d-9f10-e9c342f833a8 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: c585927d-b411-4395-9c5b-dbcb98bfafb3
+            xAxis:
+              type: datetime
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              timeUnit: yearmonthdate
+              dataFrameColumn: date
+            series:
+              - id: fa33f521-94b2-42be-a0bb-06cb37650c5e
+                axis:
+                  type: number
+                  style:
+                    max: 32000
+                    min: 25000
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  title: Inventory
+                  aggregate: sum
+                type: line
+                color:
+                  type: static
+                point: false
+                stroke: solid
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                colorOrder: ascending
+                dataFrameColumns:
+                  - count
+            dataFrame: inventory_per_day
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      resultVariable: filter_result_3
+  - cellType: MARKDOWN
+    cellId: 33e2f83f-4dc4-4458-980f-3f6814cd16e7 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: Now let's look at cars that sold, their price, their time to sell and their characteristics
+  - cellType: SQL
+    cellId: 6b4fb3fb-528c-430e-9a0d-61bddbde25f0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Sold car df
+    config:
+      source: |-
+        select *
+        from dbt_analytics.ads_summary_wide
+        where status = 'SOLD'
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: sold_car_df
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: TEXT
+    cellId: f0c45a87-58d3-471e-a406-081c03809299 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      richText:
+        - type: paragraph
+          children:
+            - text: Average price and count per model
+  - cellType: CHARTV2
+    cellId: 381303f8-71e1-46c0-b5c7-83b3084c0ac3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: 3094a222-7ef3-4c17-94f8-70b976b17d2c
+            xAxis:
+              type: string
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              dataFrameColumn: model
+            series:
+              - id: d229b790-5d1e-4dfe-80c8-67f64513847c
+                axis:
+                  type: number
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  aggregate: average
+                  numberFormat:
+                    format: CURRENCY
+                    currency: EUR
+                    columnType: NUMBER
+                    numDecimalDigits: 0
+                    abbreviateLargeNumbers: false
+                type: bar
+                color:
+                  type: static
+                layout: grouped
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                barWidth: 1
+                colorOrder: ascending
+                orientation: vertical
+                dataFrameColumns:
+                  - price
+              - id: 40c14c3a-6d32-4866-ba5f-489042096df6
+                axis:
+                  type: number
+                  style:
+                    ticks: {}
+                    labels: {}
+                  title: Number of Sales
+                  aggregate: count
+                  numberFormat:
+                    format: NUMBER
+                    currency: USD
+                    columnType: NUMBER
+                    numDecimalDigits: 0
+                    abbreviateLargeNumbers: false
+                type: line
+                color:
+                  type: static
+                  color: "#F58518"
+                point: false
+                stroke: solid
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                colorOrder: ascending
+                dataFrameColumns:
+                  - ad_id
+            dataFrame: sold_car_df
+            seriesGroups:
+              - - d229b790-5d1e-4dfe-80c8-67f64513847c
+              - - 40c14c3a-6d32-4866-ba5f-489042096df6
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      resultVariable: filter_result_4
+  - cellType: MARKDOWN
+    cellId: 8c9af49c-9519-4511-8ee7-24f1ee276875 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: Let's study the most recent Peugeot 208 since it is the most sold car
+  - cellType: SQL
+    cellId: 69e6b1f4-a81b-44b2-8445-1406b4d67669 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Sold 208 pro
+    config:
+      source: |-
+        select avg(price) as price
+        from sold_car_df
+        where model = 'PEUGEOT 208'
+        and recency = '< 2 years'
+        and seller = 'PRO'
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: sold_208_pro
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: SQL
+    cellId: 6b959acf-2ff1-4eb6-8292-9e4a9d1b6cfe # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Sold 208 particulier
+    config:
+      source: |-
+        select avg(price) as price
+        from sold_car_df
+        where model = 'PEUGEOT 208'
+        and recency = '< 2 years'
+        and seller = 'Particulier'
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: sold_208_particulier
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: METRIC
+    cellId: c1775f4e-8a62-4fd2-b412-c665a4e1d187 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      title: Average price when sold by a professionnal
+      valueVariableName: sold_208_pro
+      showComparison: true
+      comparisonType: VALUE
+      comparisonVariableName: sold_208_particulier
+      comparisonFormat: null
+      comparisonLabel: For an individual
+      displayFormat:
+        format: CURRENCY
+        currency: EUR
+        columnType: NUMBER
+        numDecimalDigits: 0
+        abbreviateLargeNumbers: false
+      valueColumn: avg(price)
+      valueRowIndex: 0
+      comparisonColumn: price
+      comparisonRowIndex: 0
+  - cellType: SQL
+    cellId: e3ceac3a-cb89-4ed6-8289-34dae7b55a50 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Sold car 208 df
+    config:
+      source: |-
+        select *
+        from dbt_analytics.ads_summary_wide
+        where status = 'SOLD'
+        and model = 'PEUGEOT 208'
+        and recency = '< 2 years'
+      dataFrameCell: false
+      dataConnectionId: 403d72f1-c940-46dd-badf-cd11afcfcedb
+      resultVariableName: sold_car_208_df
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      useQueryMode: false
+      castDecimals: true
+      useNativeDates: true
+      allowDuplicateColumns: false
+      tableDisplayConfig: null
+  - cellType: CHARTV2
+    cellId: 0b7e0303-5a60-451d-89fe-b09470454535 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      height: null
+      chartSpec:
+        type: layered
+        layers:
+          - id: 65bbd3af-ec03-4fa0-a40d-087e1c12a902
+            xAxis:
+              sort: ascending
+              type: datetime
+              style:
+                grid:
+                  style: solid
+                ticks: {}
+                labels: {}
+              timeUnit: yearmonthdate
+              dataFrameColumn: published_at
+            series:
+              - id: c7445591-67c4-4913-8577-aaeb8f53a4fe
+                axis:
+                  type: number
+                  style:
+                    grid:
+                      style: solid
+                    ticks: {}
+                    labels: {}
+                  aggregate: average
+                type: scatter
+                color:
+                  type: dataframe
+                  dataType: string
+                filled: true
+                opacity:
+                  type: static
+                  value: 1
+                tooltip:
+                  type: auto
+                colorOrder: []
+                dataFrameColumns:
+                  - price
+            dataFrame: sold_car_208_df
+        settings:
+          legend:
+            position: right
+          tooltip: true
+          selectionEnabled: false
+      chartSelection: {}
+      resultVariable: filter_result_5
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - LAST_RUN
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 115244ca-8a14-42e5-aea2-c7281714bcf3
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: b22b11e7-c1de-4e43-ae54-4290ec895e95
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 39c2cee7-d266-468e-8f7f-4cce5fec6372
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 6ebb7258-9b4d-4cc1-92eb-a8a2f990b99f
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: f472fff6-bbf6-4ad7-8113-a6c576128582
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: fe7e226b-49a3-4849-a10f-6769cbd72cc6
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 1874df35-f46a-4c7d-9f10-e9c342f833a8
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 33e2f83f-4dc4-4458-980f-3f6814cd16e7
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 381303f8-71e1-46c0-b5c7-83b3084c0ac3
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: 8c9af49c-9519-4511-8ee7-24f1ee276875
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - showSource: false
+              hideOutput: false
+              type: CELL
+              cellId: c1775f4e-8a62-4fd2-b412-c665a4e1d187
+              height: null
+              showLabel: true
