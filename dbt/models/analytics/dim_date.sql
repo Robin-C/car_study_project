@@ -41,10 +41,10 @@ SELECT
            ELSE FALSE
            END AS weekend_indr,
        datum >= (DATE_TRUNC('MONTH', current_date) + INTERVAL '1 MONTH')::DATE as is_next_month           
-FROM (SELECT '2022-12-31'::DATE + SEQUENCE.DAY AS datum
+FROM (SELECT '2022-12-30'::DATE + SEQUENCE.DAY AS datum
       FROM GENERATE_SERIES(0, 365*4) AS SEQUENCE (DAY)
       GROUP BY SEQUENCE.DAY) DQ
       where 1=1
       --and datum < (DATE_TRUNC('MONTH', current_date) + INTERVAL '1 MONTH')::DATE -- is_next_month = false
-      and datum <= current_date - 2
+        and datum <= current_date - 2
 order by 1

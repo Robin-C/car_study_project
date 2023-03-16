@@ -23,7 +23,7 @@ correct_types as (
          , region
          , published_since
          , case when published_since is null then scraped_at::date
-                when regexp_replace(regexp_replace(published_since, '\D+', '', 'g'),'[^\w]+','')::integer = 60 then '2000-01-01'
+                when regexp_replace(regexp_replace(published_since, '\D+', '', 'g'),'[^\w]+','')::integer = 60 then '2022-12-30'
                 else scraped_at::date - regexp_replace(regexp_replace(published_since, '\D+', '', 'g'),'[^\w]+','')::integer
            end as published_at
          , scraped_at

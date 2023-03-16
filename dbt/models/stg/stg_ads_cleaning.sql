@@ -81,9 +81,36 @@ region_cleaning as (
     left join {{ ref('mapping_regions') }} reg on reg.dpt::integer = model_cleaning.region::integer
 ),
 
+trim_cleaning as (
+    select ad_id
+         , url
+         , region_cleaning.model
+         , coalesce(t.trim_refined, 'MISSING') as trim
+         , price
+         , seller
+         , registered_on
+         , year
+         , km
+         , transmission
+         , engine
+         , hp
+         , color
+         , efficiency
+         , co2
+         , site_rec
+         , region
+         , published_since
+         , published_at
+         , scraped_at
+         , started_scrape_at
+         , coalesce(trim_level::text, 'MISSING') as trim_level
+    from region_cleaning
+    left join {{ ref('mapping_trim') }} t on region_cleaning.trim = t.trim and region_cleaning.model = t.model
+),
+
 final as (
     select *
-    from region_cleaning
+    from trim_cleaning
 )
 
 select *

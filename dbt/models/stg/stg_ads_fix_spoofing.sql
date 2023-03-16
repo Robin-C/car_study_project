@@ -8,6 +8,7 @@ spoofing_fixed as (
          , url
          , model
          , trim
+         , trim_level
          , (price / {{ var('spoof_percent') }})::integer as price
          , seller
          , registered_on - 365 as registered_on

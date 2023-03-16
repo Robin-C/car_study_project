@@ -7,9 +7,10 @@ with stg_ads_scrape_rank as (
 
 summary as (
     select distinct ad_id
-	 , url
+	 , first_value(url) over(partition by ad_id order by scrape_rank desc) as url
 	 , first_value(model) over(partition by ad_id order by scrape_rank desc) as model
 	 , first_value(trim) over(partition by ad_id order by scrape_rank desc) as trim
+	 , first_value(trim_level) over(partition by ad_id order by scrape_rank desc) as trim_level
 	 , avg(price) over(partition by ad_id)::integer as price
 	 , first_value(seller) over(partition by ad_id order by scrape_rank desc) as seller
 	 , first_value(year) over(partition by ad_id order by scrape_rank desc) as year
@@ -28,7 +29,7 @@ summary as (
 	 , count(*) over(partition by ad_id) as number_scraped
 	 , min(published_at) over(partition by ad_id) as published_at 
 	from stg_ads_scrape_rank
-	group by ad_id, url, model, trim, scrape_rank, price, seller, year, registered_on, km, transmission, engine, hp, color, efficiency, co2, site_rec, region, published_at, started_scrape_at
+	group by ad_id, url, model, trim, trim_level, scrape_rank, price, seller, year, registered_on, km, transmission, engine, hp, color, efficiency, co2, site_rec, region, published_at, started_scrape_at
 ),
 
 set_status as (
@@ -37,7 +38,7 @@ set_status as (
          , case when max(last_scrape_rank) over() - last_scrape_rank > 4 then 'SOLD' else 'ONGOING' end as status --if we havent seen a car in ~2 days then we assume it's been sold
 		 
     from summary
-    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
+    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 ),
 
 calculate_number_of_days_to_sell as (
@@ -49,7 +50,6 @@ calculate_number_of_days_to_sell as (
 final as (
     select *
     from calculate_number_of_days_to_sell
-	where published_at <> '2000-01-01'
 )
 
 select *

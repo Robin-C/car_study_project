@@ -12,4 +12,15 @@ seeds:
       schema: source
   - name: models
     config:
-      schema: source         
+      schema: source  
+  - name: mapping_years
+    config:
+      schema: source                
+  - name: mapping_km
+    config:
+      schema: source    
+  - name: mapping_trim
+    config:
+      schema: source   
+
+      

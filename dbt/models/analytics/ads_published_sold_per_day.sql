@@ -17,16 +17,15 @@ count_published as (
          , color
          , engine
          , hp
-         , km
-         , price
          , region
          , status
          , transmission
-         , year
+         , recency
+         , km_bracket
          , count(*) as count_published
          , 0 as count_sold
     from ads_summary_wide
-    group by 1,2,3,4,5,6,7,8,9,10,11,12
+    group by 1,2,3,4,5,6,7,8,9,10,11
 ),
 
 count_sold as (
@@ -36,17 +35,16 @@ count_sold as (
          , color
          , engine
          , hp
-         , km
-         , price
          , region
          , status
          , transmission
-         , year
+         , recency
+         , km_bracket         
          , 0 as count_published
          , count(*) as count_sold
     from ads_summary_wide
     where status = 'SOLD'
-    group by 1,2,3,4,5,6,7,8,9,10,11,12         
+    group by 1,2,3,4,5,6,7,8,9,10,11      
 ),
 
 unioned_count as (
@@ -56,12 +54,11 @@ unioned_count as (
          , t.color
          , t.engine
          , t.hp
-         , t.km
-         , t.price
          , t.region
          , t.status
          , t.transmission
-         , t.year
+         , t.recency
+         , t.km_bracket
          , sum(count_published) as count_published
          , sum(count_sold) as count_sold
     from (select *
@@ -70,7 +67,7 @@ unioned_count as (
         select *
         from count_sold
     ) t
-    group by 1,2,3,4,5,6,7,8,9,10,11,12
+    group by 1,2,3,4,5,6,7,8,9,10,11
 ),
 
 
@@ -81,12 +78,11 @@ joined_with_dates as (
          , color
          , engine
          , hp
-         , km
-         , price
          , region
          , status
          , transmission
-         , year
+         , recency
+         , km_bracket         
          , coalesce(count_published, 0) as count_published
          , coalesce(count_sold, 0) as count_sold
     from dates
@@ -96,7 +92,7 @@ joined_with_dates as (
 final as (
     select *
     from joined_with_dates
-    order by 1,2,3,4,5,6,7,8,9,10,11,12   
+    order by 1,2,3,4,5,6,7,8,9 
 )
 
 select *
