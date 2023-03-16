@@ -43,17 +43,3 @@ services:
       - ./dbt:/dbt
     env_file:
       - .env
-
-  lightdash:
-    container_name: lightdash
-    image: lightdash/lightdash
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./dbt:/usr/app/dbt
-      - ./dbt/profiles.yml:/root/.dbt/profiles.yml
-      # - ./lightdash/lightdash.yml:/usr/app/lightdash.yml
-    # command: "npm install -g @lightdash/cli"
-
-    env_file:
-      - .env
